@@ -6,8 +6,8 @@ const { Storage } = require('@google-cloud/storage');
 const app = express();
 app.use(express.static('public'));
 const upload = multer({ storage: multer.memoryStorage() });
-const storage = new Storage({ keyFilename: 'D:\\team2\\flash-winter-416005-f38b36bc5294.json' });
-const bucket = storage.bucket('server1-team2');
+const storage = new Storage({ keyFilename: '' });
+const bucket = storage.bucket('');
 
 // Endpoint to handle file uploads
 app.post('/upload', upload.single('file'), (req, res, next) => {
