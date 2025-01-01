@@ -7,8 +7,8 @@ const upload = multer();
 app.use(express.static('public'));
 
 // Azure Storage connection string and container name
-const AZURE_STORAGE_CONNECTION_STRING = 'DefaultEndpointsProtocol=https;AccountName=server2team2;AccountKey=0iTjk4vgxO2IyhQ3hawAFzqjly3axKVIZfFcnwDQU15rKC2YwZNhwMRBPh/BOMz0lSwcmyJqdZ11+AStX56mTg==;EndpointSuffix=core.windows.net    ';
-const containerName = 'server2team2files';
+const AZURE_STORAGE_CONNECTION_STRING = '';
+const containerName = '';
 
 app.post('/upload-to-azure', upload.single('file'), async (req, res) => {
     try {
