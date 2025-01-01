@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Azure File Upload</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e5e5e5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .upload-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            color: #0078d4;
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        .status-message {
+            margin-top: 20px;
+        }
+        .success {
+            color: #28a745;
+        }
+        .error {
+            color: #dc3545;
+        }
+        .view-file {
+            margin-top: 15px;
+            display: none;
+        }
+        .view-file a {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        /* Background graphics */
+        .bg-blob {
+            position: fixed;
+            top: -50px;
+            right: -50px;
+            bottom: -50px;
+            left: -50px;
+            z-index: -1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 700"><path fill="%230078d4" d="M450.4,82.9C582.5,99,678,213,700,332c20.8,113.6-42.8,230.6-140.4,292C483.2,673.9,361.3,690,252.2,660.1,140.8,629.9,45.5,552.2,16,456.4-15.1,356.1,22.9,245.3,111.7,181.2,198.8,117.9,318.2,100.9,450.4,82.9Z"/></svg>') no-repeat center center;
+            background-size: cover;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Upload File to Azure Blob Storage</h2>
+        <input id="fileInput" type="file" />
+        <button onclick="uploadFile()">Upload</button>
+        <div class="status-message" id="statusMessage"></div>
+        <div class="view-file" id="viewFile">
+            <a href="" target="_blank">View Uploaded File</a>
+        </div>
+    </div>
+    <div class="bg-blob"></div>
+
+    <script>
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            const statusMessage = document.getElementById('statusMessage');
+            const viewFile = document.getElementById('viewFile');
+            const viewFileLink = viewFile.querySelector('a');
+
+            try {
+                const response = await fetch('/upload-to-azure', {
+                    method: 'POST',
+                    body: formData,
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    statusMessage.textContent = 'Upload successful!';
+                    statusMessage.className = 'status-message success';
+                    viewFileLink.href = result.url; // URL should be returned from your server
+                    viewFile.style.display = 'block';
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            } catch (error) {
+                statusMessage.textContent = 'Upload failed: ' + error.message;
+                statusMessage.className = 'status-message error';
+                console.error('Upload failed:', error);
+            }
+        }
+    </script>
+</body>
+</html>

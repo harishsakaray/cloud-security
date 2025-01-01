@@ -1,0 +1,31 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #004D40;
+    color: #FFFFFF;
+    padding: 20px;
+    text-align: center;
+}
+
+.options-container, .login-container, .dashboard-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.option, button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #008CBA;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+}
+
+input[type="text"], input[type="password"] {
+    margin: 10px;
+    padding: 10px;
+}

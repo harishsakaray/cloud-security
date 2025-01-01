@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload to Server 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .message {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload to Server 1</h1>
+        <input type="file" id="fileInput" required>
+        <button onclick="uploadFile()">Upload</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const messageDiv = document.getElementById('message');
+
+            if (!file) {
+                alert("Please select a file to upload.");
+                return;
+            }
+
+            // Create a FormData object and append the file
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Make the request to the server endpoint
+            fetch('http://localhost:3000/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    messageDiv.innerHTML = `<p style="color: green;">File uploaded successfully! <a href="${data.url}" target="_blank">View File</a></p>`;
+                } else {
+                    throw new Error('Failed to upload');
+                }
+            })
+            .catch(error => {
+                messageDiv.innerHTML = `<p style="color: red;">Error uploading file.</p>`;
+                console.error('Error uploading file:', error);
+            });
+        }
+    </script>
+</body>
+</html>
